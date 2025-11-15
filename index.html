@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VMTY SQUAD - Pendaftaran Resmi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --premium-black: #0a0a0a;
+            --metal-gray: #2a2a2a;
+            --silver-glow: #e0e0e0;
+            --accent-silver: #c0c0c0;
+            --highlight-silver: #f0f0f0;
+            --card-bg: #1a1a1a;
+            --error-color: #ff4d4d;
+            --success-color: #4CAF50;
+            --gradient: linear-gradient(135deg, #2a2a2a 0%, #0a0a0a 100%);
+        }
+
+        body {
+            background: var(--gradient);
+            color: var(--silver-glow);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 120, 120, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(120, 120, 120, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 120, 120, 0.05) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .logo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            border: 2px solid rgba(192, 192, 192, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, transparent, rgba(192, 192, 192, 0.1), transparent);
+            z-index: -1;
+        }
+
+        .logo-text {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(to right, #c0c0c0, #f0f0f0, #c0c0c0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(192, 192, 192, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .logo-subtitle {
+            font-size: 1.2rem;
+            color: var(--accent-silver);
+            font-weight: 300;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--accent-silver), transparent);
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(to right, var(--silver-glow), var(--accent-silver));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--accent-silver);
+        }
+
+        .gender-options {
+            display: flex;
+            gap: 15px;
+        }
+
+        .gender-option {
+            flex: 1;
+        }
+
+        .gender-option input {
+            display: none;
+        }
+
+        .gender-option label {
+            display: block;
+            padding: 12px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .gender-option label:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .gender-option input:checked + label {
+            background: rgba(192, 192, 192, 0.2);
+            border-color: var(--accent-silver);
+            box-shadow: 0 0 15px rgba(192, 192, 192, 0.3);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--silver-glow);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-silver);
+            box-shadow: 0 0 15px rgba(192, 192, 192, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .help-text {
+            font-size: 0.85rem;
+            color: var(--accent-silver);
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .error-text {
+            color: var(--error-color);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-silver), var(--silver-glow));
+            color: var(--premium-black);
+            box-shadow: 0 5px 15px rgba(192, 192, 192, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(192, 192, 192, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--silver-glow);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .btn-danger {
+            background: rgba(255, 77, 77, 0.2);
+            color: var(--error-color);
+            border: 1px solid rgba(255, 77, 77, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: rgba(255, 77, 77, 0.3);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .action-buttons .btn {
+            flex: 1;
+        }
+
+        .summary-item {
+            margin-bottom: 20px;
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-silver);
+        }
+
+        .summary-label {
+            font-weight: 600;
+            color: var(--accent-silver);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .summary-value {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px 30px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateY(30px);
+            animation: slideUp 0.5s forwards 0.2s;
+            position: relative;
+        }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--accent-silver), transparent);
+        }
+
+        .modal-title {
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            background: linear-gradient(to right, var(--silver-glow), var(--accent-silver));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .modal-buttons .btn {
+            flex: 1;
+        }
+
+        .goodbye-message {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--silver-glow), var(--accent-silver), var(--silver-glow));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-top: 50px;
+            animation: pulse 2s infinite;
+            text-shadow: 0 0 20px rgba(192, 192, 192, 0.5);
+            padding: 20px;
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: var(--accent-silver);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .logo {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .logo-text {
+                font-size: 2rem;
+            }
+            
+            .goodbye-message {
+                font-size: 2.2rem;
+            }
+            
+            .modal-title {
+                font-size: 1.8rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <div class="logo">
+                <div class="logo-text">VMTY</div>
+            </div>
+            <div class="logo-subtitle">SQUAD</div>
+        </div>
+
+        <!-- Modal Popup -->
+        <div id="welcomeModal" class="modal-overlay">
+            <div class="modal-content">
+                <h2 class="modal-title">Mau Masuk VMTY?</h2>
+                <p style="margin-bottom: 10px; color: #aaa;">Bergabunglah dengan squad elit kami</p>
+                <div class="modal-buttons">
+                    <button id="yesBtn" class="btn btn-primary">IYA</button>
+                    <button id="noBtn" class="btn btn-secondary">TIDAK</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Goodbye Message -->
+        <div id="goodbyeMessage" class="goodbye-message hidden">
+            Terimakasih, sampai jumpa!
+        </div>
+
+        <!-- Registration Form -->
+        <div id="registrationForm" class="card hidden">
+            <h2 class="card-title">Form Pendaftaran</h2>
+            <form id="vmtyForm">
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-venus-mars"></i> Pilih Gender
+                    </label>
+                    <div class="gender-options">
+                        <div class="gender-option">
+                            <input type="radio" id="male" name="gender" value="Laki-laki" required>
+                            <label for="male">
+                                <i class="fas fa-mars"></i> Laki-laki
+                            </label>
+                        </div>
+                        <div class="gender-option">
+                            <input type="radio" id="female" name="gender" value="Perempuan" required>
+                            <label for="female">
+                                <i class="fas fa-venus"></i> Perempuan
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="robloxName" class="form-label">
+                        <i class="fas fa-user"></i> Nama Roblox
+                    </label>
+                    <input type="text" id="robloxName" class="form-input" placeholder="VMTYxNamaAnda" required>
+                    <div class="help-text">
+                        <i class="fas fa-info-circle"></i> Contoh: VMTYxCello, VMTYxArik, VMTYxNayla
+                    </div>
+                    <div id="nameError" class="error-text">
+                        <i class="fas fa-exclamation-circle"></i> Nama Roblox harus diawali VMTYx.
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-arrow-right"></i> LANJUT
+                </button>
+            </form>
+        </div>
+
+        <!-- Summary Page -->
+        <div id="summaryPage" class="card hidden">
+            <h2 class="card-title">Ringkasan Pendaftaran</h2>
+            
+            <div class="summary-item">
+                <div class="summary-label">
+                    <i class="fas fa-venus-mars"></i> Gender
+                </div>
+                <div id="summaryGender" class="summary-value"></div>
+            </div>
+            
+            <div class="summary-item">
+                <div class="summary-label">
+                    <i class="fas fa-user"></i> Nama Roblox
+                </div>
+                <div id="summaryRobloxName" class="summary-value"></div>
+            </div>
+
+            <p style="text-align: center; margin: 25px 0; color: var(--accent-silver);">
+                <i class="fas fa-check-circle" style="color: var(--success-color);"></i> 
+                Pendaftaran berhasil! Sekarang gabung ke grup dan saluran kami:
+            </p>
+
+            <div class="action-buttons">
+                <a href="https://ig.me/j/AbbGbOJJSWPXL55g/" target="_blank" class="btn btn-primary">
+                    <i class="fab fa-instagram"></i> Masuk Grup
+                </a>
+                <a href="https://whatsapp.com/channel/0029VbADiLW72WU58XSGVY2P" target="_blank" class="btn btn-secondary">
+                    <i class="fab fa-whatsapp"></i> Masuk Saluran
+                </a>
+            </div>
+
+            <button id="resetBtn" class="btn btn-danger" style="margin-top: 20px;">
+                <i class="fas fa-redo"></i> Hapus Data & Daftar Ulang
+            </button>
+        </div>
+
+        <div class="footer">
+            VMTY SQUAD &copy; 2023 - Elite Gaming Community
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const welcomeModal = document.getElementById('welcomeModal');
+        const goodbyeMessage = document.getElementById('goodbyeMessage');
+        const registrationForm = document.getElementById('registrationForm');
+        const summaryPage = document.getElementById('summaryPage');
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const vmtyForm = document.getElementById('vmtyForm');
+        const robloxNameInput = document.getElementById('robloxName');
+        const nameError = document.getElementById('nameError');
+        const summaryGender = document.getElementById('summaryGender');
+        const summaryRobloxName = document.getElementById('summaryRobloxName');
+        const resetBtn = document.getElementById('resetBtn');
+
+        // Check if user data exists in localStorage
+        function checkExistingUser() {
+            const userData = localStorage.getItem('vmtyUserData');
+            if (userData) {
+                // User data exists, skip modal and show summary
+                welcomeModal.classList.add('hidden');
+                displaySummary(JSON.parse(userData));
+            } else {
+                // No user data, show modal
+                welcomeModal.classList.remove('hidden');
+            }
+        }
+
+        // Display summary page with user data
+        function displaySummary(userData) {
+            summaryGender.textContent = userData.gender;
+            summaryRobloxName.textContent = userData.robloxName;
+            summaryPage.classList.remove('hidden');
+        }
+
+        // Validate Roblox name
+        function validateRobloxName(name) {
+            const trimmedName = name.trim();
+            return trimmedName.startsWith('VMTYx') && trimmedName.length > 5;
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Event Listeners
+        yesBtn.addEventListener('click', () => {
+            welcomeModal.classList.add('hidden');
+            registrationForm.classList.remove('hidden');
+        });
+
+        noBtn.addEventListener('click', () => {
+            welcomeModal.classList.add('hidden');
+            goodbyeMessage.classList.remove('hidden');
+        });
+
+        vmtyForm.addEventListener('submit', (e) => {
+            e.preventDefaul
